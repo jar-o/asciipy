@@ -26,6 +26,8 @@ class AppTestCase(unittest.TestCase):
         with open('test-images/batman.jpeg', 'rb') as f:
             resp = self.app.post('/', data={ 'image': f }).data
         cache_file = os.path.join(cache_folder, 'NmNjZGY4NTM2YzkwNDZlMjk0Njc5MWEwNjhiYzkyNWU=')
+        # Make sure it's actually text
+        assert '^mlajF1&&&&&&&&&&&sjlf22444224PW' in resp
         assert os.path.exists(cache_file)
         with open(cache_file, 'rb') as f:
             content = f.read()
