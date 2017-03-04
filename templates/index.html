@@ -1,0 +1,36 @@
+<!doctype html>
+<html>
+    <head>
+        <!-- Google Fonts -->
+        <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic">
+        <!-- CSS Reset -->
+        <link rel="stylesheet" href="//cdn.rawgit.com/necolas/normalize.css/master/normalize.css">
+        <!-- Milligram CSS minified -->
+        <link rel="stylesheet" href="//cdn.rawgit.com/milligram/milligram/master/dist/milligram.min.css">
+    </head>
+<body>
+<title>ASCIIfy</title>
+<div class="container">
+  <div class="row">
+    <div class="column">
+    <h1>Upload image to ASCIIfy</h1>
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <ul class=flashes>
+        {% for message in messages %}
+          <li>{{ message }}</li>
+        {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+    <form method="post" enctype="multipart/form-data">
+        <p>
+        <input type="file" name="image" accept="{{allowed_extensions}}">
+        <input type="submit" value="upload">
+        </p>
+    </form>
+    </div>
+ </div>
+</div>
+</body>
+</html>
