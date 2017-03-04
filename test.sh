@@ -23,19 +23,20 @@ ls -alf tmp cache/NmNjZGY4NTM2YzkwNDZlMjk0Njc5MWEwNjhiYzkyNWU=
 fz1=`wc -c cache/NmNjZGY4NTM2YzkwNDZlMjk0Njc5MWEwNjhiYzkyNWU= | awk '{print $1}'`
 fz2=`wc -c tmp | awk '{print $1}'`
 if [ ! "$fz1" == "$fz2" ]; then
-    echo 'FAIL'
+    echo 'FAIL - uncompressed content length'
 fi
 rm tmp
 
-# Check headers to verify the content length is less that the uncompressed file size
+# Check headers to verify the content length is less that the uncompressed
+# ascii file
 compsz=$(curl -s -D - -H 'Accept-Encoding: gzip,deflate' \
     -X POST -F "image=@test-images/batman.jpeg" http://0.0.0.0:5000 -o /dev/null | \
     grep 'Content-Length' | awk '{print $2+0}')
 
 pct=`echo "scale=5;$compsz/$fz1" | bc -l`
-echo "Compressed data is $compsz vs $fz1 uncompressed: A $pct% reduction"
+echo "Compressed data is $compsz vs $fz1 uncompressed: $pct% of original size"
 if [ "$compsz" -gt "$fz1" ]; then
-    echo 'FAIL'
+    echo 'FAIL - compression ratio'
 fi
 
 # Kills the python server
