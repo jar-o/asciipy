@@ -42,5 +42,17 @@ fi
 # Kills the python server
 ps -ef | grep app.py | grep -v grep | awk '{print $2}' | xargs kill
 
+echo "========================================================================="
+echo "Response time check..."
+rm cache/* # Reset cache
+
+for i in `seq 1 10`;
+do
+    echo '--'
+    time -p curl -s -H 'Accept-Encoding: gzip,deflate' \
+        -X POST -F "image=@test-images/batman.jpeg" http://0.0.0.0:5000 \
+        -o /dev/null
+done
+
 # Cleanup
 rm cache/*

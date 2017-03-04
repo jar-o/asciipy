@@ -10,7 +10,7 @@ class AppTestCase(unittest.TestCase):
         self.app = app.app.test_client()
 
     def tearDown(self):
-        folder = cache_folder 
+        folder = cache_folder
         for f in os.listdir(folder):
             fp = os.path.join(folder, f)
             if os.path.isfile(fp): os.unlink(fp)
@@ -32,6 +32,6 @@ class AppTestCase(unittest.TestCase):
         with open(cache_file, 'rb') as f:
             content = f.read()
             assert resp == content # response == cache data
-  
+
 if __name__ == '__main__':
     unittest.main()
