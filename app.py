@@ -15,13 +15,13 @@ app.config['CACHE_FOLDER'] = 'cache'
 app.secret_key = os.environ.get('SECRET_KEY', '123abc')
 
 # This enables HTTP compression on the responses, which is helpful since with
-# ascii art there should be plenty of repeated characters.
+# ascii art there generally are plenty of repeated characters.
 app.config['COMPRESS_MIMETYPES'] = [
         'text/html',
         'text/css',
         'text/xml',
         'text/text'
-    ] 
+    ]
 Compress(app)
 
 # Our simple caching mechanism for the ascii art we generate.
@@ -32,21 +32,21 @@ cache = cache.AsciiCache(app.config['CACHE_FOLDER'])
 ###############################################################################
 
 # This decorator handles the image upload scenario on the given endpoint. It
-# also implements a simple cache that stores the ascii art for a given image ID
-# and returns that instead of rendering the image to ascii each time. NOTE that
+# uses a simple cache mechanism that stores the ascii art for a given image
+# file and returns that instead of rendering the image to ascii each time. NOTE
 # in a production deploy, we'd probably want to use an actual caching server,
-# like Redis, with TTL, etc ... 
+# like Redis, with expiry, etc ...
 def image_upload(func):
     def wrapper(*args):
         if request.method == 'POST':
             if ok_file(request):
                 fil = request.files['image']
 
-                # Get a unique identifier based on the file content before we
-                # try and save the binary and convert to ascii. This identifier
-                # is the key used for the file-based cache that follows.
+                # Get a unique identifier based on the file content. This
+                # identifier is the key used for the file-based cache that
+                # follows.
 
-                # A large file was uploaded, use only part to generate key
+                # If a large file was uploaded, only use part of it to generate key
                 if type(fil.stream) is file:
                     key = file_id(secure_filename(fil.filename) + fil.stream.read(16384))
                     # Reset file pointer or trying to do fil.save() will error

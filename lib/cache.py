@@ -3,8 +3,11 @@ import base64
 import asciigen
 
 class AsciiCache(object):
-    """ Cache is file based. Using a uniquely generated "key" we create a
-    file with that name in the CACHE_FOLDER. """
+    """ This is a simple, file-based cache. The key is the filename under the
+    cache folder. If a file matching the key name exists on disk, we simply
+    return it. Otherwise, we render the image to ASCII and cache it. There is
+    no expiry, but this could be easily be scheduled (like via cron) using the
+    cache_purge() method below. """
 
     def __init__(self, path):
         self.path = path
