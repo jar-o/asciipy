@@ -25,6 +25,13 @@ fz2=`wc -c tmp | awk '{print $1}'`
 if [ ! "$fz1" == "$fz2" ]; then
     echo 'FAIL - uncompressed content length'
 fi
+
+# Compares response content with cached file
+cmp=`diff tmp cache/NmNjZGY4NTM2YzkwNDZlMjk0Njc5MWEwNjhiYzkyNWU=`
+if [ ! -z $cmp ]; then
+    echo 'FAIL - content matches'
+fi
+
 rm tmp
 
 # Check headers to verify the content length is less that the uncompressed
