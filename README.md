@@ -39,4 +39,19 @@ If you have those, you can run the "test suite" by doing
 ```
 ./test.sh
 ```
+## API
 
+### `POST /`
+There is a single verb and endpoint that constitutes the API. Doing `GET /` will simply return a login form, which is primarily useful for browsers.
+
+However, you can do `POST /` with `multipart/form-data`, and you will get a JSON response with the ASCII art:
+
+```
+{
+  "ascii": "... the art ..."
+}
+```
+
+
+
+Note that `POST /` does **not** expect JSON input. It expects only `multipart/form-data`. This is a design choice, because `multipart/form-data` allows you to upload straight binary data without inflating it with something like Base64.

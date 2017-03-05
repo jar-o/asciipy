@@ -1,4 +1,4 @@
-import os
+import os, json
 import app
 import unittest
 
@@ -29,9 +29,10 @@ class AppTestCase(unittest.TestCase):
         # Make sure it's actually text
         assert '^mlajF1&&&&&&&&&&&sjlf22444224PW' in resp
         assert os.path.exists(cache_file)
+        j = json.loads(resp)
         with open(cache_file, 'rb') as f:
             content = f.read()
-            assert resp == content # response == cache data
+            assert j['ascii'] == content # response == cache data
 
 if __name__ == '__main__':
     unittest.main()

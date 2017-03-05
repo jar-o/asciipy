@@ -1,5 +1,5 @@
 import os, time, md5
-from flask import Flask, flash, request, Response, redirect, render_template
+from flask import Flask, flash, request, Response, redirect, render_template, jsonify
 from flask_compress import Compress
 from werkzeug.utils import secure_filename
 from lib import cache
@@ -16,12 +16,7 @@ app.secret_key = os.environ.get('SECRET_KEY', '123abc')
 
 # This enables HTTP compression on the responses, which is helpful since with
 # ascii art there generally are plenty of repeated characters.
-app.config['COMPRESS_MIMETYPES'] = [
-        'text/html',
-        'text/css',
-        'text/xml',
-        'text/text'
-    ]
+app.config['COMPRESS_MIMETYPES'] = [ 'text/text', 'application/json' ]
 Compress(app)
 
 # Our simple caching mechanism for the ascii art we generate.
@@ -57,7 +52,11 @@ def image_upload(func):
                 # Check cache for ascii version, otherwise generate from source
                 # image and cache it.
                 content = cache.cache(key, fil)
-                resp = Response(content, mimetype='text/text')
+                print request.args.get('output')
+                if request.form and request.form['output'] == 'raw':
+                    resp = Response(content, mimetype='text/text')
+                else:
+                    resp = jsonify({ 'ascii': content })
                 return resp
 
             flash('Must upload a file of the appropriate type and name!')

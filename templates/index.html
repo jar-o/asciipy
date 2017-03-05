@@ -23,14 +23,26 @@
         </ul>
       {% endif %}
     {% endwith %}
+    </div><!-- column -->
+  </div><!-- row -->
+
     <form method="post" enctype="multipart/form-data">
-        <p>
+      <fieldset>
+
         <input type="file" name="image" accept="{{allowed_extensions}}">
         <input type="submit" value="upload">
-        </p>
+
+        <div class="row">
+            <div class="column column-33 float-right">
+            Output format: <select name="output">
+                <option>raw</option>
+                <option>json</option>
+            </select>
+            </div>
+        </div>
+
+    </fieldset>
     </form>
-    </div>
- </div>
-</div>
+</div><!-- container -->
 </body>
 </html>

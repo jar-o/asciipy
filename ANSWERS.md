@@ -24,7 +24,7 @@ Requests/sec:  12058.77
 Transfer/sec:     11.80MB
 ```
 #### Render response time
-Because we're working with potentially large sets of data (images) it would pay to know the how this component performs. I've included a response time check in `test.sh`. 
+Because we're working with potentially large sets of data (images) it would pay to know the how the upload/render component performs. I've included a response time check in `test.sh`. 
 
 Here you can see there is a reasonable improvement when we have caching turned on.
 
@@ -33,10 +33,12 @@ Here you can see there is a reasonable improvement when we have caching turned o
 real 1.19
 user 0.00
 sys 0.00
+
 # CACHE HIT
 real 1.02
 user 0.00
 sys 0.00
+
 # CACHE HIT
 real 1.02
 user 0.00

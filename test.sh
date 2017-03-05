@@ -15,7 +15,7 @@ sleep 2 # Give server a moment to start up
 
 # Verifies we're receiving a gzip rather than text response
 curl -s -H 'Accept-Encoding: gzip,deflate' \
-    -X POST -F "image=@test-images/batman.jpeg" http://0.0.0.0:5000 > tmp.gz
+    -X POST -F "output=raw" -F "image=@test-images/batman.jpeg" http://0.0.0.0:5000 > tmp.gz
 gunzip tmp.gz
 ls -alf tmp cache/NmNjZGY4NTM2YzkwNDZlMjk0Njc5MWEwNjhiYzkyNWU=
 
@@ -30,7 +30,8 @@ rm tmp
 # Check headers to verify the content length is less that the uncompressed
 # ascii file
 compsz=$(curl -s -D - -H 'Accept-Encoding: gzip,deflate' \
-    -X POST -F "image=@test-images/batman.jpeg" http://0.0.0.0:5000 -o /dev/null | \
+    -X POST -F "output=raw" -F "image=@test-images/batman.jpeg" \
+    http://0.0.0.0:5000 -o /dev/null | \
     grep 'Content-Length' | awk '{print $2+0}')
 
 pct=`echo "scale=5;$compsz/$fz1" | bc -l`
@@ -50,8 +51,8 @@ for i in `seq 1 10`;
 do
     echo '--'
     time -p curl -s -H 'Accept-Encoding: gzip,deflate' \
-        -X POST -F "image=@test-images/batman.jpeg" http://0.0.0.0:5000 \
-        -o /dev/null
+        -X POST -F "output=raw" -F "image=@test-images/batman.jpeg" \
+        http://0.0.0.0:5000 -o /dev/null
 done
 
 # Cleanup
