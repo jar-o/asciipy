@@ -65,7 +65,6 @@ It expects a file input parameter named `image`, as in the following HTML: `<inp
 You can specify to get non-JSON output by setting `output="raw"` as a form variable. An example of doing this with curl:
 
 ```
-curl -sv -H 'Accept-Encoding: gzip,deflate' -X POST \
-	-F "output=raw" -F "image=@test-images/batman.jpeg" \
-	http://0.0.0.0:5000
+curl -sv -X POST http://0.0.0.0:5000 \
+    -F "output=raw" -F "image=@test-images/batman.jpeg"
 ```
