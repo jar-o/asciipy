@@ -55,3 +55,11 @@ However, you can do `POST /` with `multipart/form-data`, and you will get a JSON
 
 
 Note that `POST /` does **not** expect JSON input. It expects only `multipart/form-data`. This is a design choice, because `multipart/form-data` allows you to upload straight binary data without inflating it with something like Base64.
+
+You can specify to get non-JSON output by setting a `output="raw"` as a form variable. An example of doing this with curl:
+
+```
+curl -sv -H 'Accept-Encoding: gzip,deflate' -X POST \
+	-F "output=raw" -F "image=@test-images/batman.jpeg" \
+	http://0.0.0.0:5000
+```
