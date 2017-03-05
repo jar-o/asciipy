@@ -24,9 +24,16 @@ Requests/sec:  12058.77
 Transfer/sec:     11.80MB
 ```
 #### Render response time
-Because we're working with potentially large sets of data (images) it would pay to know the how the upload/render component performs. I've included a response time check in `test.sh`. 
+Because we're working with potentially large sets of data (images) it would pay to know the how the upload/render component performs. I've included a response time check in `test.sh` that uses `curl`, i.e.
 
-Here you can see there is a reasonable improvement when we have caching turned on.
+```
+time -p curl -s -H 'Accept-Encoding: gzip,deflate' \
+        -X POST -F "output=raw" \
+        -F "image=@test-images/batman.jpeg" \
+        http://0.0.0.0:5000 -o /dev/null
+```
+
+Here you can see the times. Note that there is a reasonable improvement when we have caching turned on.
 
 ```
 # NOT IN CACHE
@@ -49,10 +56,10 @@ sys 0.00
 ### 2. What are some strategies you would employ to make your service more scalable?
 
 #### Caching
-I've implemented a simple file-based cache in this server. It makes some amount of difference, but there are a couple problems. 
+I've implemented a simple file-based cache in this server. It makes some difference, but there are a couple problems. 
 
 1. It's wasteful to cache the ASCII output at the node level, since running multiple servers means a high chance of duplicate caching. Moving to a centralized cache configuration with a high performance server like **Redis** would be preferred.
-2. A caching server like **Redis** (or **memcached**) should be used regardless, since it's highly unlikely my rudimentary file caching mechanism can compare, performance-wise.
+2. A caching server like **Redis** (or **memcached**) should be used regardless, since it's highly unlikely my rudimentary file caching mechanism can compare performance-wise.
 3. Using a remote caching server takes pressure off the node's CPU/disk and moves the problem into one of response time -- making it a better fit for an async I/O service, which may provide some benefit.
 
 #### HTTP Compression at proxy level
@@ -61,14 +68,14 @@ Because of the high redundancy in ASCII images, they compress really well. In my
 **Gunicorn** recommends running behind a proxy server such as **Nginx**. If we were to deploy using a proxy configuration, I'd move the HTTP Compression into the proxy. With **Nginx** this is a just a [configuration option](https://www.nginx.com/resources/admin-guide/compression-and-decompression/), which is convenient. 
 
 #### Horizontal scale
-This service would scale pretty easily by just adding nodes. Even the current implementation could scale this way, without changes. (Non-optimally, to be sure.)
+This service would scale pretty easily by just adding nodes. Even my current implementation here could scale this way, without changes. (Non-optimally, to be sure.)
 
 ### 3. How would your design change if you needed to store the uploaded images?
 
-My implementation stores the binary image to disk temporarily before passing it to the ASCII generator function, which expects a file path. After conversion, we delete the source image, and cache the ASCII art version.
+My implementation stores the binary image to disk temporarily before passing it to the ASCII generator function, which expects a file path. After conversion, we delete the source image and cache the ASCII art version.
 
-Ostensibly, we'd change this final delete step and use a storage service to save the binary image. My initial instinct would be to use Amazon's **S3**, or an equivalent.
+Ostensibly, we'd change this final delete step and use a storage service to save the binary image. My initial instinct would be to use Amazon's **S3** (or some equivalent).
 
 We are already generating a unique(ish)* identifier for every uploaded file per the cache, so we could easily use that when storing to the central service.
 
-_*We'd have to maybe take some steps to better ensure uniqueness for the identifier in this scenario, since the potential for collisions would be higher._
+_*We'd have to maybe take some steps to better ensure uniqueness for the identifier in this scenario, since the potential for collisions would be higher. I don't feel like the steps I've taken so far would be quite good enough._
