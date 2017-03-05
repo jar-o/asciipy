@@ -5,7 +5,11 @@
 This is a **Python/Flask** app that allows you to upload images and convert them to
 ASCII art.
 
-It consists of a single endpoint `/` that accepts either `GET` or `POST`. A `GET` will provide an upload form, and a `POST` will allow you to upload a file.
+It consists of a single endpoint `/` that accepts either `GET` or `POST`. A `GET` will provide an upload form, and a `POST` will allow you to upload an image file.
+![](misc/upload.png)
+
+From which it will produce some decent ascii art:
+![](misc/ascii-batman.png)
 
 ## Getting started
 **Prerequisites**: Python/pip
