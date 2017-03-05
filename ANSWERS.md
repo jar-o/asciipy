@@ -58,9 +58,9 @@ sys 0.00
 #### Caching
 I've implemented a simple file-based cache in this server. It makes some difference, but there are a couple problems. 
 
-1. It's wasteful to cache the ASCII output at the node level, since running multiple servers means a high chance of duplicate caching. Moving to a centralized cache configuration with a high performance server like **Redis** would be preferred.
+1. It's wasteful to cache the ASCII output at the node level, since running multiple servers means a high chance of duplicate caching. Moving to a centralized cache configuration with high performance servers such as **Redis** would be preferred.
 2. A caching server like **Redis** (or **memcached**) should be used regardless, since it's highly unlikely my rudimentary file caching mechanism can compare performance-wise.
-3. Using a remote caching server takes pressure off the node's CPU/disk and moves the problem into one of response time -- making it a better fit for an async I/O service, which may provide some benefit.
+3. Using a remote caching solution (single server or cluster) would take pressure off the node's CPU/disk and move the problem into one of response time -- making it a better fit for an async I/O service, which may provide some benefit.
 
 #### HTTP Compression at proxy level
 Because of the high redundancy in ASCII images, they compress really well. In my rather "toy" implementation here I'm doing HTTP Compression at the app level.
@@ -69,6 +69,11 @@ Because of the high redundancy in ASCII images, they compress really well. In my
 
 #### Horizontal scale
 This service would scale pretty easily by just adding nodes. Even my current implementation here could scale this way, without changes. (Non-optimally, to be sure.)
+
+#### Offload processing to clients
+An interesting possibility would be to have an endpoint that allows a client to check to see if the image the user is about to upload is already cached. If it is, they'd skip uploading the source image.
+
+You could do this by providing the algorithm for generating the cache key from the file content. The client would perform this operation, send the key to the endpoint, and if the file is already in the cache, immediately download it. 
 
 ### 3. How would your design change if you needed to store the uploaded images?
 
