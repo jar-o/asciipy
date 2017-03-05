@@ -62,7 +62,7 @@ Note that `POST /` does **not** expect JSON input. It expects only `multipart/fo
 
 It expects a file input parameter named `image`, as in the following HTML: `<input type="file" name="image" />`
 
-You can specify to get non-JSON output by setting `output="raw"` as a form variable. An example of doing this with curl:
+You can specify to get non-JSON output by setting `output="raw"` as a form variable. An example of doing this with `curl`:
 
 ```
 curl -sv -X POST http://0.0.0.0:5000 \
