@@ -12,7 +12,7 @@ class AsciiCache(object):
     def __init__(self, path):
         self.path = path
 
-    def cache(self, key, fil):
+    def convert(self, key, fil):
         key = base64.urlsafe_b64encode(key) # Make key filename safe
         cache_key = os.path.join(self.path, key)
         if os.path.exists(cache_key):

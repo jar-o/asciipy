@@ -51,7 +51,7 @@ def image_upload(func):
 
                 # Check cache for ascii version, otherwise generate from source
                 # image and cache it.
-                content = cache.cache(key, fil)
+                content = cache.convert(key, fil)
                 print request.args.get('output')
                 if request.form and request.form['output'] == 'raw':
                     resp = Response(content, mimetype='text/text')
