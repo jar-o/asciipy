@@ -34,7 +34,7 @@ fi
 
 rm tmp
 
-# Check headers to verify the content length is less that the uncompressed
+# Check headers to verify the content length is less than the uncompressed
 # ascii file
 compsz=$(curl -s -D - -H 'Accept-Encoding: gzip,deflate' \
     -X POST -F "output=raw" -F "image=@test-images/batman.jpeg" \
