@@ -12,7 +12,7 @@ class AsciiCache(object):
     def __init__(self, path):
         self.path = path
 
-    def convert(self, key, fil):
+    def generate(self, key, fil):
         key = base64.urlsafe_b64encode(key) # Make key filename safe
         cache_key = os.path.join(self.path, key)
         if os.path.exists(cache_key):
@@ -28,7 +28,7 @@ class AsciiCache(object):
         return content
 
     # TODO unused, probably should be part of a scheduled task
-    def cache_purge(self, path, days):
+    def purge(self, path, days):
         for f in os.listdir(path):
             if os.stat(os.path.join(path,f)).st_mtime < (time.time() - (days * 86400)):
                 os.remove(f)

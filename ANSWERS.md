@@ -53,6 +53,12 @@ sys 0.00
 ... etc ...
 ```
 
+Additionally, the tests show the amount of compression we get with HTTP level compression enabled (`batman.jpeg`):
+
+```
+Compressed data is 5218 vs 14496 uncompressed: .35996% of original size
+```
+
 ### 2. What are some strategies you would employ to make your service more scalable?
 
 #### Caching
