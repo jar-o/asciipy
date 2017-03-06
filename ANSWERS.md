@@ -67,6 +67,7 @@ I've implemented a simple file-based cache in this server. It makes some differe
 1. It's wasteful to cache the ASCII output at the node level, since running multiple servers means a high chance of duplicate caching. Moving to a centralized cache configuration with high performance servers such as **Redis** would be preferred.
 2. A caching server like **Redis** (or **memcached**) should be used regardless, since it's highly unlikely my rudimentary file caching mechanism can compare performance-wise.
 3. Using a remote caching solution (single server or cluster) would take pressure off the node's CPU/disk and move the problem into one of response time -- making it a better fit for an async I/O service, which may provide some benefit.
+4. You could additionally store the ASCII art in compressed form, and simply return that in the `Accept-Encoding: gzip,deflate` scenario. You'd only decompress when the above header is absent from the request.
 
 #### HTTP Compression at proxy level
 Because of the high redundancy in ASCII images, they compress really well. In my rather "toy" implementation here I'm doing HTTP Compression at the app level.
