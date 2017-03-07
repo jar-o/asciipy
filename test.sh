@@ -41,7 +41,7 @@ compsz=$(curl -s -D - -H 'Accept-Encoding: gzip,deflate' \
     http://0.0.0.0:5000 -o /dev/null | \
     grep 'Content-Length' | awk '{print $2+0}')
 
-pct=`echo "scale=5;$compsz/$fz1" | bc -l`
+pct=`echo "scale=5;$compsz/$fz1*100" | bc -l`
 echo "Compressed data is $compsz vs $fz1 uncompressed: $pct% of original size"
 if [ "$compsz" -gt "$fz1" ]; then
     echo 'FAIL - compression ratio'
