@@ -1,5 +1,7 @@
 # ASCIIfy server 
 
+[![Codix](https://codix.io/gh/badge/jar-o/asciipy)](https://codix.io/gh/repo/jar-o/asciipy)
+
 ## Overview
 
 This is a **Python/Flask** app that allows you to upload images and convert them to
